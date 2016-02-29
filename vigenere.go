@@ -1,15 +1,4 @@
-package main
-
-import (
-	"fmt"
-)
-
-func main() {
-	key := "Fortification"
-	message := "Defend the east wall of the castle"
-	out := Cipher(message, key)
-	fmt.Println(Decipher(out, key))
-}
+package vigenere
 
 func Sanitize(in string) string {
 	out := []rune{}
@@ -24,7 +13,7 @@ func Sanitize(in string) string {
 	return string(out)
 }
 
-func Quartetify(in string) string {
+func Quartets(in string) string {
 	out := make([]rune, 0, len(in))
 	for i, v := range in {
 		if i%4 == 0 && i != 0 {
@@ -43,13 +32,13 @@ func DecodePair(a, b rune) rune {
 	return (((((a - 'A') - (b - 'A')) + 26) % 26) + 'A')
 }
 
-func Cipher(msg, key string) string {
+func Encipher(msg, key string) string {
 	smsg, skey := Sanitize(msg), Sanitize(key)
 	out := make([]rune, 0, len(msg))
 	for i, v := range smsg {
 		out = append(out, EncodePair(v, rune(skey[i%len(skey)])))
 	}
-	return Quartetify(string(out))
+	return string(out)
 }
 
 func Decipher(msg, key string) string {
@@ -58,5 +47,5 @@ func Decipher(msg, key string) string {
 	for i, v := range smsg {
 		out = append(out, DecodePair(v, rune(skey[i%len(skey)])))
 	}
-	return Quartetify(string(out))
+	return string(out)
 }
